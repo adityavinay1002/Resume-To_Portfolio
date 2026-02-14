@@ -172,11 +172,10 @@
         <div class="hero">
             <div>
                 <h1>Hi, I'm <span>{{ data.name }}</span></h1>
-                <p>{{ data.summary[0] if (data.summary and data.summary|length > 0) else 'Full Stack Developer' }}</p>
+                <p>{{ data.role if data.role else 'Software Engineer' }}</p>
             </div>
         </div>
 
-        {% if data.summary %}
         <section id="about">
             <div class="section-title">
                 <h2>About <span>Me</span></h2>
@@ -184,12 +183,20 @@
             </div>
             <div
                 style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; text-align: center; max-width: 800px; margin: 0 auto;">
-                {% for p in data.summary %}
-                <p>{{ p }}</p>
-                {% endfor %}
+                <p>{{ data.about_generated if data.about_generated else data.summary if data.summary else '' }}</p>
+
+                <div style="margin-top: 30px; display: flex; gap: 20px; justify-content: center;">
+                    {% if data.contact.linkedin %}
+                    <a href="{{ data.contact.linkedin }}" target="_blank"
+                        style="color: #60a5fa; text-decoration: none; font-weight: 600;">LinkedIn</a>
+                    {% endif %}
+                    {% if data.contact.github %}
+                    <a href="{{ data.contact.github }}" target="_blank"
+                        style="color: #60a5fa; text-decoration: none; font-weight: 600;">GitHub</a>
+                    {% endif %}
+                </div>
             </div>
         </section>
-        {% endif %}
 
         {% if data.skills or data.skills_categorized %}
         <section id="skills">
@@ -201,7 +208,7 @@
                 {% if data.skills_categorized %}
                 {% for category, items in data.skills_categorized.items() %}
                 {% for skill in items %}
-                <div class="skill-tag">{{ skill }}</div>
+                <div class="skill-tag" title="{{ category }}">{{ skill }}</div>
                 {% endfor %}
                 {% endfor %}
                 {% else %}
@@ -216,13 +223,29 @@
         {% if data.experience %}
         <section id="experience">
             <div class="section-title">
-                <h2>Experience</h2>
+                <h2>Work <span>Experience</span></h2>
                 <div class="bar"></div>
             </div>
             <div style="max-width: 800px; margin: 0 auto;">
                 {% for exp in data.experience %}
                 <div class="exp-item">
                     <p style="font-size: 1.1rem; color: var(--text);">{{ exp }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        {% if data.education %}
+        <section id="education">
+            <div class="section-title">
+                <h2>Academic <span>Background</span></h2>
+                <div class="bar"></div>
+            </div>
+            <div style="max-width: 800px; margin: 0 auto;">
+                {% for edu in data.education %}
+                <div class="exp-item" style="border-left-color: #3b82f6;">
+                    <p style="font-size: 1.1rem; color: var(--text);">{{ edu }}</p>
                 </div>
                 {% endfor %}
             </div>
@@ -238,9 +261,20 @@
             <div class="grid">
                 {% for proj in data.projects %}
                 <div class="card">
-                    <h3 style="margin-bottom: 15px;">{{ proj }}</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem;">Detailed breakdown of professional
-                        implementation and impact.</p>
+                    <h3 style="margin-bottom: 10px;">{{ proj.title if proj.title else proj }}</h3>
+                    {% if proj.description %}
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 15px; font-style: italic;">
+                        {{ proj.description }}
+                    </p>
+                    {% endif %}
+
+                    {% if proj.bullets %}
+                    <ul style="padding-left: 20px; color: var(--text-muted); font-size: 0.9rem;">
+                        {% for bullet in proj.bullets %}
+                        <li style="margin-bottom: 8px;">{{ bullet }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
@@ -249,12 +283,23 @@
 
         <section id="contact">
             <div class="section-title">
-                <h2>Contact</h2>
+                <h2>Get In <span>Touch</span></h2>
                 <div class="bar"></div>
             </div>
             <div style="text-align: center; font-size: 1.2rem;">
-                <p style="margin: 10px 0;">{{ data.contact.email if data.contact.email else '' }}</p>
-                <p style="margin: 10px 0;">{{ data.contact.phone if data.contact.phone else '' }}</p>
+                {% if data.contact.email %}
+                <p style="margin: 15px 0;">
+                    <a href="mailto:{{ data.contact.email }}"
+                        style="color: var(--text); text-decoration: none; font-weight: 700;">{{ data.contact.email
+                        }}</a>
+                </p>
+                {% endif %}
+                {% if data.contact.phone %}
+                <p style="margin: 15px 0;">
+                    <a href="tel:{{ data.contact.phone }}" style="color: var(--text); text-decoration: none;">{{
+                        data.contact.phone }}</a>
+                </p>
+                {% endif %}
             </div>
         </section>
     </div>
