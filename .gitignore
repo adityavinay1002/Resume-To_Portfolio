@@ -1,0 +1,22 @@
+# Node
+node_modules/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Build
+dist/
+build/
+
+# Generated folders
+uploads/
+outputs/
+
+# Environment
+.env
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+python-multipart
+pymupdf
+opencv-python-headless
+jinja2
+regex
+xhtml2pdf
