@@ -5,134 +5,264 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ data.name }} - Portfolio</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
     <style>
+        :root {
+            --bg: #020617;
+            --surface: #0f172a;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: linear-gradient(135deg, #a855f7, #3b82f6);
+            --border: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
             line-height: 1.6;
-            color: #333;
-            max-width: 800px;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px 20px;
         }
 
-        header {
+        h1,
+        h2,
+        h3 {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            margin-bottom: 40px;
         }
 
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            color: #2c3e50;
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 20px;
         }
 
-        .contact-info {
-            color: #666;
+        .hero span {
+            background: var(--accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Sections */
         section {
-            margin-bottom: 30px;
+            padding: 80px 0;
         }
 
-        h2 {
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 5px;
-            color: #2c3e50;
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
         }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
+        .section-title h2 {
+            font-size: 2.5rem;
             margin-bottom: 10px;
         }
 
-        .tag {
-            background: #eee;
-            padding: 3px 8px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-right: 5px;
-            font-size: 0.9em;
+        .section-title span {
+            color: #a855f7;
+        }
+
+        .section-title .bar {
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--surface);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        /* Experience */
+        .exp-item {
+            border-left: 2px solid #334155;
+            padding-left: 30px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .exp-item::before {
+            content: '';
+            position: absolute;
+            left: -7px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: #3b82f6;
+            border-radius: 50%;
+        }
+
+        /* Skills Tags */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .skill-tag {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
     </style>
 </head>
 
 <body>
-    <header>
-        <h1>{{ data.name }}</h1>
-        <div class="contact-info">
-            {% for item in data.contact %}
-            <span>{{ item }}</span>
-            {% endfor %}
+
+    <div class="container">
+        <div class="hero">
+            <div>
+                <h1>Hi, I'm <span>{{ data.name }}</span></h1>
+                <p>{{ data.summary[0] if (data.summary and data.summary|length > 0) else 'Full Stack Developer' }}</p>
+            </div>
         </div>
-    </header>
 
-    {% if data.summary %}
-    <section>
-        <h2>About Me</h2>
-        <p>{{ data.summary | join(' ') }}</p>
-    </section>
-    {% endif %}
+        {% if data.summary %}
+        <section id="about">
+            <div class="section-title">
+                <h2>About <span>Me</span></h2>
+                <div class="bar"></div>
+            </div>
+            <div
+                style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; text-align: center; max-width: 800px; margin: 0 auto;">
+                {% for p in data.summary %}
+                <p>{{ p }}</p>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
 
-    {% if data.skills_categorized %}
-    <section>
-        <h2>Technical Expertise</h2>
-        {% for category, items in data.skills_categorized.items() %}
-        <div style="margin-bottom: 15px;">
-            <strong style="display: block; color: #666; font-size: 0.8em; text-transform: uppercase;">{{ category
-                }}</strong>
-            {% for skill in items %}
-            <span class="tag">{{ skill }}</span>
-            {% endfor %}
-        </div>
-        {% endfor %}
-    </section>
-    {% elif data.skills %}
-    <section>
-        <h2>Skills</h2>
-        <div>
-            {% for skill in data.skills %}
-            <span class="tag">{{ skill }}</span>
-            {% endfor %}
-        </div>
-    </section>
-    {% endif %}
+        {% if data.skills or data.skills_categorized %}
+        <section id="skills">
+            <div class="section-title">
+                <h2>My <span>Skills</span></h2>
+                <div class="bar"></div>
+            </div>
+            <div class="skills-grid">
+                {% if data.skills_categorized %}
+                {% for category, items in data.skills_categorized.items() %}
+                {% for skill in items %}
+                <div class="skill-tag">{{ skill }}</div>
+                {% endfor %}
+                {% endfor %}
+                {% else %}
+                {% for skill in data.skills %}
+                <div class="skill-tag">{{ skill }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </section>
+        {% endif %}
 
-    {% if data.experience %}
-    <section>
-        <h2>Experience</h2>
-        <ul>
-            {% for job in data.experience %}
-            <li>{{ job }}</li>
-            {% endfor %}
-        </ul>
-    </section>
-    {% endif %}
+        {% if data.experience %}
+        <section id="experience">
+            <div class="section-title">
+                <h2>Experience</h2>
+                <div class="bar"></div>
+            </div>
+            <div style="max-width: 800px; margin: 0 auto;">
+                {% for exp in data.experience %}
+                <div class="exp-item">
+                    <p style="font-size: 1.1rem; color: var(--text);">{{ exp }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
 
-    {% if data.projects %}
-    <section>
-        <h2>Projects</h2>
-        <ul>
-            {% for project in data.projects %}
-            <li>{{ project }}</li>
-            {% endfor %}
-        </ul>
-    </section>
-    {% endif %}
+        {% if data.projects %}
+        <section id="projects">
+            <div class="section-title">
+                <h2>Featured <span>Projects</span></h2>
+                <div class="bar"></div>
+            </div>
+            <div class="grid">
+                {% for proj in data.projects %}
+                <div class="card">
+                    <h3 style="margin-bottom: 15px;">{{ proj }}</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Detailed breakdown of professional
+                        implementation and impact.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
 
-    {% if data.education %}
-    <section>
-        <h2>Education</h2>
-        <ul>
-            {% for edu in data.education %}
-            <li>{{ edu }}</li>
-            {% endfor %}
-        </ul>
-    </section>
-    {% endif %}
+        <section id="contact">
+            <div class="section-title">
+                <h2>Contact</h2>
+                <div class="bar"></div>
+            </div>
+            <div style="text-align: center; font-size: 1.2rem;">
+                <p style="margin: 10px 0;">{{ data.contact.email if data.contact.email else '' }}</p>
+                <p style="margin: 10px 0;">{{ data.contact.phone if data.contact.phone else '' }}</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        &copy; {{ data.name }}'s Portfolio | Generated by Resume2Portfolio
+    </footer>
+
 </body>
 
 </html>
